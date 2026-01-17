@@ -10,7 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// MongoDB connection (SECURE - ENV)
+// MongoDB connection 
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
@@ -30,7 +30,7 @@ const itemSchema = new mongoose.Schema(
 
 const Item = mongoose.model("Item", itemSchema);
 
-// Helper function (_id → id)
+// Helper function
 const transformItem = (item) => {
   const obj = item.toObject();
   return {
@@ -42,7 +42,6 @@ const transformItem = (item) => {
 
 // Routes
 
-// Get all items
 app.get("/items", async (req, res) => {
   try {
     const items = await Item.find();
@@ -52,7 +51,6 @@ app.get("/items", async (req, res) => {
   }
 });
 
-// Get single item
 app.get("/items/:id", async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -70,7 +68,6 @@ app.get("/items/:id", async (req, res) => {
   }
 });
 
-// Add new item
 app.post("/items", async (req, res) => {
   try {
     const item = new Item(req.body);
